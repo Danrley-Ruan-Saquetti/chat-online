@@ -1,0 +1,59 @@
+import { Injectable } from '@nestjs/common'
+import { HttpEsliph, Result } from '@esliph/util-node'
+import { z } from 'zod'
+import { ZodValidateService } from '@util/zod'
+import { } from 'class-validator'
+import { ResultException } from '@global/exceptions/result.exception'
+import { UserEntitySimple } from '@modules/user/schema'
+import { UserCreateRepositoryAbstract } from '@modules/user/repository/create.repository'
+
+export class UserCreateUseCaseDTO {}
+
+export const UserCreateUseCaseArgsSchema = z.object({})
+
+export type UserCreateUseCaseArgs = z.input<typeof UserCreateUseCaseArgsSchema>
+export type UserCreateUseCaseResponse = z.output<typeof UserCreateUseCaseArgsSchema>
+export type UserCreateUseCasePerformResponseValue = { success: string }
+export type UserCreateUseCasePerformResponse = Promise<Result<UserCreateUseCasePerformResponseValue>>
+
+@Injectable()
+export class UserCreateUseCase {
+    constructor(private readonly createUserRepository: UserCreateRepositoryAbstract) {}
+
+    async perform(createArgs: UserCreateUseCaseArgs): UserCreateUseCasePerformResponse {
+        try {
+            const responsePerform = await this.performCreate(createArgs)
+
+            return responsePerform
+        } catch (err: any) {
+            if (err instanceof ResultException) {
+                return err
+            }
+            return Result.failure({ title: 'Create User', message: [{ message: 'Cannot create user' }] }, HttpEsliph.HttpStatusCodes.BAD_REQUEST)
+        }
+    }
+
+    private async performCreate(createArgs: UserCreateUseCaseArgs): UserCreateUseCasePerformResponse {
+        const createArgsValidationResult = this.validateArgsProps(createArgs)
+
+        const createUserData = createArgsValidationResult.getValue()
+
+        const userEntityTable = new UserEntitySimple(createUserData)
+
+        const performCreateUserRepositoryResult = await this.performCreateUserRepository(userEntityTable)
+
+        return Result.success({ success: 'User create successfully' }, HttpEsliph.HttpStatusCodes.CREATED)
+    }
+
+    private validateArgsProps(createArgs: UserCreateUseCaseArgs) {
+        const UserCreateDTO = ZodValidateService.performParse(createArgs, UserCreateUseCaseArgsSchema)
+
+        return UserCreateDTO
+    }
+
+    private async performCreateUserRepository(userData: UserEntitySimple) {
+        const response = await this.createUserRepository.perform({ data: userData })
+
+        return response
+    }
+}

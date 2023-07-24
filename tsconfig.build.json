@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "exclude": [
+        "./node_modules",
+        "./docs",
+        "./dist",
+        "./public",
+        "./src/generators",
+        "**/*_sketch",
+        "./prisma",
+        "**/*spec.ts",
+        "**/*sketch.ts",
+        "./src/yo",
+        "./src/@tests"
+    ]
+}

@@ -1,0 +1,76 @@
+import { Injectable } from '@nestjs/common'
+import { HttpEsliph, Result } from '@esliph/util-node'
+import { z } from 'zod'
+import { } from 'class-validator'
+import { ZodValidateService } from '@util/zod'
+import { ResultException } from '@global/exceptions/result.exception'
+import { UserEntityTable } from '@modules/user/schema'
+import { UserPropSelect } from '@modules/user/repository/repository'
+import { UserUpdateRepositoryAbstract } from '@modules/user/repository/update.repository'
+import { UserFindUniqueRepositoryAbstract } from '@modules/user/repository/find.repository'
+
+export class UserUpdateUseCaseDTO { }
+
+export const UserUpdateUseCaseArgsSchema = ZodValidateService.defaultSchemaModelTable().extend({ })
+
+export type UserUpdateUseCaseArgs = z.input<typeof UserUpdateUseCaseArgsSchema>
+export type UserUpdateUseCaseResponse = z.output<typeof UserUpdateUseCaseArgsSchema>
+export type UserUpdateUseCasePerformResponseValue = { success: string }
+export type UserUpdateUseCasePerformResponse = Promise<Result<UserUpdateUseCasePerformResponseValue>>
+
+@Injectable()
+export class UserUpdateUseCase {
+    constructor(private readonly updateUserRepository: UserUpdateRepositoryAbstract, private readonly findUserRepository: UserFindUniqueRepositoryAbstract) {}
+
+    async perform(updateArgs: UserUpdateUseCaseArgs): UserUpdateUseCasePerformResponse {
+        try {
+            const responsePerform = await this.performUpdate(updateArgs)
+
+            return responsePerform
+        } catch (err: any) {
+            if (err instanceof ResultException) {
+                return err
+            }
+            return Result.failure({ title: 'Update User', message: [{ message: 'Cannot update user' }] }, HttpEsliph.HttpStatusCodes.BAD_REQUEST)
+        }
+    }
+
+    private async performUpdate(updateArgs: UserUpdateUseCaseArgs): UserUpdateUseCasePerformResponse {
+        const updateArgsValidationResult = this.validateArgsProps(updateArgs)
+
+        const updateUserData = updateArgsValidationResult.getValue()
+
+        const findUserToBeUpdatedResult = await this.findUserToBeUpdated({ id: updateUserData.id })
+
+        const userToBeUpdated = findUserToBeUpdatedResult.getValue().user
+
+        const userEntityTable = new UserEntityTable(userToBeUpdated)
+
+        userEntityTable.update(updateUserData)
+
+        const performUpdateRepositoryResult = await this.performUpdateRepository(userEntityTable)
+
+        return Result.success({ success: 'User update successfully' }, HttpEsliph.HttpStatusCodes.OK)
+    }
+
+    private async findUserToBeUpdated(args: { id: number }) {
+        const response = await this.findUserRepository.perform({ where: { id: args.id } })
+
+        return response
+    }
+
+    private validateArgsProps(updateArgs: UserUpdateUseCaseArgs) {
+        const userUpdateDTO = ZodValidateService.performParse(updateArgs, UserUpdateUseCaseArgsSchema)
+
+        return userUpdateDTO
+    }
+
+    private async performUpdateRepository(userData: UserEntityTable) {
+        const response = await this.updateUserRepository.perform({
+            where: { id: userData.id },
+            data: userData
+        })
+
+        return response
+    }
+}

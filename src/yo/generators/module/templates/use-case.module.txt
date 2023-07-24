@@ -1,0 +1,16 @@
+import { Module, Global, Provider } from '@nestjs/common'
+import { UserUseCaseModule } from '@modules/user/use-case.module'
+import { UserRepositoryModule } from '@modules/user/repository.module'
+import { UserController } from '@modules/user/user.controller'
+import { UserService } from '@modules/user/user.service'
+
+const userModuleServices: Provider[] = [UserService]
+
+@Global()
+@Module({
+    imports: [UserUseCaseModule, UserRepositoryModule],
+    controllers: [UserController],
+    providers: [...userModuleServices],
+    exports: [...userModuleServices]
+})
+export class UserModule {}

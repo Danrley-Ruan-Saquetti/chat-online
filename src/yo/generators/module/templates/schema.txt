@@ -1,0 +1,24 @@
+import { <%= ModuleName %> as <%= ModuleName %>ModelPrisma } from '@prisma/client'
+
+// Export the 'Enums' and 'Types' defined in the Prisma schema related to the '<%= ModuleName %>' model here
+export { }
+
+// Properties of '<%= ModuleName %>' referring to the Prisma model
+export type <%= ModuleName %>ModelTable = <%= ModuleName %>ModelPrisma
+
+// Properties of '<%= ModuleName %>' referring to the pure entity, not related to the Prisma model
+export type <%= ModuleName %>ModelSimple = { }
+
+export class <%= ModuleName %>EntityTable implements <%= ModuleName %>ModelTable {
+    /* Implement the properties of '<%= ModuleName %>ModelTable' */
+
+    constructor(<%= moduleName %>EntityProps: <%= ModuleName %>ModelTable) {}
+
+    update(<%= moduleName %>EntityProps: Partial<<%= ModuleName %>ModelTable>) { }
+}
+
+export class <%= ModuleName %>EntitySimple implements <%= ModuleName %>ModelSimple {
+    /* Implement the properties of '<%= ModuleName %>ModelSimple' */
+
+    constructor(props: <%= ModuleName %>ModelSimple) {}
+}

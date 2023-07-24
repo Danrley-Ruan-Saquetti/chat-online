@@ -1,0 +1,39 @@
+import { Injectable } from '@nestjs/common'
+import { Result } from '@esliph/util-node'
+import {
+    <%= ModuleName %>ModelTableRepositoryAbstract,
+    <%= ModuleName %>UpdateResponse,
+    <%= ModuleName %>UpdateArgs,
+    <%= ModuleName %>UpdateManyResponse,
+    <%= ModuleName %>UpdateManyArgs
+} from '@modules/<%= moduleName %>/repository/repository'
+
+export abstract class <%= ModuleName %>UpdateRepositoryAbstract {
+    perform: (args: <%= ModuleName %>UpdateArgs) => Promise<Result<<%= ModuleName %>UpdateResponse>>
+}
+
+@Injectable()
+export class <%= ModuleName %>UpdateRepository implements <%= ModuleName %>UpdateRepositoryAbstract {
+    constructor(private readonly repository: <%= ModuleName %>ModelTableRepositoryAbstract) {}
+
+    async perform(args: <%= ModuleName %>UpdateArgs): Promise<Result<<%= ModuleName %>UpdateResponse>> {
+        const response = await this.repository.update(args)
+
+        return response
+    }
+}
+
+export abstract class <%= ModuleName %>UpdateManyRepositoryAbstract {
+    perform: (args: <%= ModuleName %>UpdateManyArgs) => Promise<Result<<%= ModuleName %>UpdateManyResponse>>
+}
+
+@Injectable()
+export class <%= ModuleName %>UpdateManyRepository implements <%= ModuleName %>UpdateManyRepositoryAbstract {
+    constructor(private readonly repository: <%= ModuleName %>ModelTableRepositoryAbstract) {}
+
+    async perform(args: <%= ModuleName %>UpdateManyArgs): Promise<Result<<%= ModuleName %>UpdateManyResponse>> {
+        const response = await this.repository.updateMany(args)
+
+        return response
+    }
+}

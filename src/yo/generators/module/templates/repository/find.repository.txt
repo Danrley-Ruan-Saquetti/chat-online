@@ -1,0 +1,107 @@
+import { Injectable } from '@nestjs/common'
+import { Result } from '@esliph/util-node'
+import {
+    <%= ModuleName %>ModelTableRepositoryAbstract,
+    <%= ModuleName %>FindFirstArgs,
+    <%= ModuleName %>FindFirstResponse,
+    <%= ModuleName %>FindManyArgs,
+    <%= ModuleName %>FindManyResponse,
+    <%= ModuleName %>FindFirstOrThrowArgs,
+    <%= ModuleName %>FindFirstOrThrowResponse,
+    <%= ModuleName %>FindUniqueOrThrowArgs,
+    <%= ModuleName %>FindUniqueOrThrowResponse,
+    <%= ModuleName %>FindUniqueArgs,
+    <%= ModuleName %>FindUniqueResponse,
+    <%= ModuleName %>ExistsArgs,
+    <%= ModuleName %>ExistsResponse
+} from '@modules/<%= moduleName %>/repository/repository'
+
+export abstract class <%= ModuleName %>FindUniqueRepositoryAbstract {
+    perform: <Args extends <%= ModuleName %>FindUniqueArgs>(args: Args) => Promise<Result<<%= ModuleName %>FindUniqueResponse<Args>>>
+}
+
+@Injectable()
+export class <%= ModuleName %>FindUniqueRepository implements <%= ModuleName %>FindUniqueRepositoryAbstract {
+    constructor(private readonly repository: <%= ModuleName %>ModelTableRepositoryAbstract) {}
+
+    async perform<Args extends <%= ModuleName %>FindUniqueArgs>(args: Args): Promise<Result<<%= ModuleName %>FindUniqueResponse<Args>>> {
+        const response = await this.repository.findUnique(args)
+
+        return response
+    }
+}
+
+export abstract class <%= ModuleName %>FindExistsRepositoryAbstract {
+    perform: <Args extends <%= ModuleName %>ExistsArgs>(args: Args) => Promise<Result<<%= ModuleName %>ExistsResponse>>
+}
+
+@Injectable()
+export class <%= ModuleName %>FindExistsRepository implements <%= ModuleName %>FindExistsRepositoryAbstract {
+    constructor(private readonly repository: <%= ModuleName %>ModelTableRepositoryAbstract) {}
+
+    async perform<Args extends <%= ModuleName %>ExistsArgs>(args: Args): Promise<Result<<%= ModuleName %>ExistsResponse>> {
+        const response = await this.repository.findExists(args)
+
+        return response
+    }
+}
+
+export abstract class <%= ModuleName %>FindFirstRepositoryAbstract {
+    perform: <Args extends <%= ModuleName %>FindFirstArgs>(args: Args) => Promise<Result<<%= ModuleName %>FindFirstResponse<Args>>>
+}
+
+@Injectable()
+export class <%= ModuleName %>FindFirstRepository implements <%= ModuleName %>FindFirstRepositoryAbstract {
+    constructor(private readonly repository: <%= ModuleName %>ModelTableRepositoryAbstract) {}
+
+    async perform<Args extends <%= ModuleName %>FindFirstArgs>(args: Args): Promise<Result<<%= ModuleName %>FindFirstResponse<Args>>> {
+        const response = await this.repository.findFirst(args)
+
+        return response
+    }
+}
+
+export abstract class <%= ModuleName %>FindManyRepositoryAbstract {
+    perform: <Args extends <%= ModuleName %>FindManyArgs>(args: Args) => Promise<Result<<%= ModuleName %>FindManyResponse<Args>>>
+}
+
+@Injectable()
+export class <%= ModuleName %>FindManyRepository implements <%= ModuleName %>FindManyRepositoryAbstract {
+    constructor(private readonly repository: <%= ModuleName %>ModelTableRepositoryAbstract) {}
+
+    async perform<Args extends <%= ModuleName %>FindManyArgs>(args: Args): Promise<Result<<%= ModuleName %>FindManyResponse<Args>>> {
+        const response = await this.repository.findMany(args)
+
+        return response
+    }
+}
+
+export abstract class <%= ModuleName %>FindFirstOrThrowRepositoryAbstract {
+    perform: <Args extends <%= ModuleName %>FindFirstOrThrowArgs>(args: Args) => Promise<Result<<%= ModuleName %>FindFirstOrThrowResponse<Args>>>
+}
+
+@Injectable()
+export class <%= ModuleName %>FindFirstOrThrowRepository implements <%= ModuleName %>FindFirstOrThrowRepositoryAbstract {
+    constructor(private readonly repository: <%= ModuleName %>ModelTableRepositoryAbstract) {}
+
+    async perform<Args extends <%= ModuleName %>FindFirstOrThrowArgs>(args: Args): Promise<Result<<%= ModuleName %>FindFirstOrThrowResponse<Args>>> {
+        const response = await this.repository.findFirstOrThrow(args)
+
+        return response
+    }
+}
+
+export abstract class <%= ModuleName %>FindUniqueOrThrowRepositoryAbstract {
+    perform: <Args extends <%= ModuleName %>FindUniqueOrThrowArgs>(args: Args) => Promise<Result<<%= ModuleName %>FindUniqueOrThrowResponse<Args>>>
+}
+
+@Injectable()
+export class <%= ModuleName %>FindUniqueOrThrowRepository implements <%= ModuleName %>FindUniqueOrThrowRepositoryAbstract {
+    constructor(private readonly repository: <%= ModuleName %>ModelTableRepositoryAbstract) {}
+
+    async perform<Args extends <%= ModuleName %>FindUniqueOrThrowArgs>(args: Args): Promise<Result<<%= ModuleName %>FindUniqueOrThrowResponse<Args>>> {
+        const response = await this.repository.findUniqueOrThrow(args)
+
+        return response
+    }
+}

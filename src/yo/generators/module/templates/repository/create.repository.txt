@@ -1,0 +1,39 @@
+import { Injectable } from '@nestjs/common'
+import { Result } from '@esliph/util-node'
+import {
+    <%= ModuleName %>ModelTableRepositoryAbstract,
+    <%= ModuleName %>CreateArgs,
+    <%= ModuleName %>CreateManyArgs,
+    <%= ModuleName %>CreateResponse,
+    <%= ModuleName %>CreateManyResponse
+} from '@modules/<%= moduleName %>/repository/repository'
+
+export abstract class <%= ModuleName %>CreateRepositoryAbstract {
+    perform: (args: <%= ModuleName %>CreateArgs) => Promise<Result<<%= ModuleName %>CreateResponse>>
+}
+
+@Injectable()
+export class <%= ModuleName %>CreateRepository implements <%= ModuleName %>CreateRepositoryAbstract {
+    constructor(private readonly repository: <%= ModuleName %>ModelTableRepositoryAbstract) {}
+
+    async perform(args: <%= ModuleName %>CreateArgs): Promise<Result<<%= ModuleName %>CreateResponse>> {
+        const response = await this.repository.create(args)
+
+        return response
+    }
+}
+
+export abstract class <%= ModuleName %>CreateManyRepositoryAbstract {
+    perform: (args: <%= ModuleName %>CreateManyArgs) => Promise<Result<<%= ModuleName %>CreateManyResponse>>
+}
+
+@Injectable()
+export class <%= ModuleName %>CreateManyRepository implements <%= ModuleName %>CreateManyRepositoryAbstract {
+    constructor(private readonly repository: <%= ModuleName %>ModelTableRepositoryAbstract) {}
+
+    async perform(args: <%= ModuleName %>CreateManyArgs): Promise<Result<<%= ModuleName %>CreateManyResponse>> {
+        const response = await this.repository.createMany(args)
+
+        return response
+    }
+}

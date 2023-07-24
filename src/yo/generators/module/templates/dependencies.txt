@@ -1,0 +1,89 @@
+import { Provider } from '@nestjs/common'
+import { UserModelTableRepository, UserModelTableRepositoryAbstract } from '@modules/user/repository/repository'
+import {
+    UserCreateManyRepository,
+    UserCreateManyRepositoryAbstract,
+    UserCreateRepository,
+    UserCreateRepositoryAbstract
+} from '@modules/user/repository/create.repository'
+import {
+    UserUpdateManyRepository,
+    UserUpdateManyRepositoryAbstract,
+    UserUpdateRepository,
+    UserUpdateRepositoryAbstract
+} from '@modules/user/repository/update.repository'
+import {
+    UserDeleteManyRepository,
+    UserDeleteManyRepositoryAbstract,
+    UserDeleteRepository,
+    UserDeleteRepositoryAbstract
+} from '@modules/user/repository/delete.repository'
+import {
+    UserFindExistsRepository,
+    UserFindExistsRepositoryAbstract,
+    UserFindFirstOrThrowRepository,
+    UserFindFirstOrThrowRepositoryAbstract,
+    UserFindFirstRepository,
+    UserFindFirstRepositoryAbstract,
+    UserFindManyRepository,
+    UserFindManyRepositoryAbstract,
+    UserFindUniqueOrThrowRepository,
+    UserFindUniqueOrThrowRepositoryAbstract,
+    UserFindUniqueRepository,
+    UserFindUniqueRepositoryAbstract
+} from '@modules/user/repository/find.repository'
+
+export const UserDependencies: Provider[] = [
+    {
+        provide: UserModelTableRepositoryAbstract,
+        useClass: UserModelTableRepository
+    },
+    {
+        provide: UserCreateManyRepositoryAbstract,
+        useClass: UserCreateManyRepository
+    },
+    {
+        provide: UserCreateRepositoryAbstract,
+        useClass: UserCreateRepository
+    },
+    {
+        provide: UserUpdateManyRepositoryAbstract,
+        useClass: UserUpdateManyRepository
+    },
+    {
+        provide: UserUpdateRepositoryAbstract,
+        useClass: UserUpdateRepository
+    },
+    {
+        provide: UserDeleteManyRepositoryAbstract,
+        useClass: UserDeleteManyRepository
+    },
+    {
+        provide: UserDeleteRepositoryAbstract,
+        useClass: UserDeleteRepository
+    },
+    {
+        provide: UserFindExistsRepositoryAbstract,
+        useClass: UserFindExistsRepository
+    },
+    {
+        provide: UserFindFirstOrThrowRepositoryAbstract,
+        useClass: UserFindFirstOrThrowRepository
+    },
+    {
+        provide: UserFindFirstRepositoryAbstract,
+        useClass: UserFindFirstRepository
+    },
+    {
+        provide: UserFindManyRepositoryAbstract,
+        useClass: UserFindManyRepository
+    },
+    {
+        provide: UserFindUniqueOrThrowRepositoryAbstract,
+        useClass: UserFindUniqueOrThrowRepository
+    },
+    {
+        provide: UserFindUniqueRepositoryAbstract,
+        useClass: UserFindUniqueRepository
+    }
+]
